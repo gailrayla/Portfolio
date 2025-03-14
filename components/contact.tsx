@@ -8,7 +8,7 @@ import { sendEmail } from "@/action/sendEmail";
 import SubmitBtn from "./submit-btn";
 import toast from "react-hot-toast";
 
-export default function contact() {
+export default function Contact() {
   const { ref } = useSectionInView("Contact");
 
   return (
@@ -33,7 +33,7 @@ export default function contact() {
       <form
         className="mt-10 flex flex-col dark:text-black/80"
         action={async (formData) => {
-          const { data, error } = await sendEmail(formData);
+          const { error } = await sendEmail(formData);
           if (error) {
             toast.error(error);
             return;

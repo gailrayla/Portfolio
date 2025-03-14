@@ -11,7 +11,7 @@ import { experiencesData } from "@/lib/data";
 import { useSectionInView } from "@/lib/hooks";
 import { useTheme } from "next-themes";
 
-export default function experience() {
+export default function Experience() {
   const { ref } = useSectionInView("Experience");
   const { theme } = useTheme();
 

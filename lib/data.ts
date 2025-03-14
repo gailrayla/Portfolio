@@ -1,7 +1,5 @@
 import React from "react";
-import { CgWorkAlt } from "react-icons/cg";
 import { FaReact } from "react-icons/fa";
-import { LuGraduationCap } from "react-icons/lu";
 import OM_Farm from "@/public/OM_Farm.jpg";
 import BountyEx2 from "@/public/BountyEx2.png";
 import ReplyIntelligence from "@/public/ReplyIntelligence.png";
