@@ -80,6 +80,7 @@ export const projectsData = [
       "I built the OM Farm Portal with TypeScript, featuring CQRS-designed article and agreement microservices. I also integrated Google services for a complete full-stack experience.",
     tags: ["React", "Next.js", "PostgreSQL", "GraphQL", "GCP"],
     imageUrl: OM_Farm,
+    url: "https://www.om.farm/",
   },
   {
     title: "BountyEX",
@@ -87,6 +88,7 @@ export const projectsData = [
       "I developed the BountyEX frontend, a decentralized Ethereum bounty platform with smart contract integration.",
     tags: ["React", "TypeScript", "NestJS", "ShadCN/UI", "Blockchain"],
     imageUrl: BountyEx2,
+    url: "https://www.bountyex.org/change",
   },
   {
     title: "Reply Intelligence",
@@ -94,6 +96,7 @@ export const projectsData = [
       "I refactored legacy code of Reply Intelligence to a NestJS microservices architecture and developed its full-stack features using React, Firebase, PostgreSQL, and Google Cloud Functions.",
     tags: ["NestJS", "React", "PostgreSQL", "Firebase", "GCP"],
     imageUrl: ReplyIntelligence,
+    url: "https://app.replyintelligence.com/",
   },
 ] as const;
 
