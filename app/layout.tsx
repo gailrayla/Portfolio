@@ -13,7 +13,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Gail Parayno | Software Engineer Portfolio",
+  title: "Gail Parayno | Full-Stack Developer Portfolio",
   description:
     "Gail Parayno is a software engineer specializing in frontend and full-stack development. Explore projects, skills, and experience in web development.",
   keywords: [
