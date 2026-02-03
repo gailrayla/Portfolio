@@ -1,7 +1,7 @@
 import React from "react";
 import { FaReact } from "react-icons/fa";
 import OM_Farm from "@/public/OM_Farm.jpg";
-import BountyEx2 from "@/public/BountyEx2.png";
+import TrustyCo2 from "@/public/TrustyCo2.png";
 import ReplyIntelligence from "@/public/ReplyIntelligence.png";
 import { GoBook } from "react-icons/go";
 import { FaWordpressSimple } from "react-icons/fa6";
@@ -75,20 +75,20 @@ export const experiencesData = [
 
 export const projectsData = [
   {
+    title: "Trusty Co",
+    description:
+      "I built a single-page website for an Australian cleaning service, featuring smooth animations, a contact form, and a responsive design.",
+    tags: ["Angular", "TypeScript", "SCSS", "Vercel", "EmailJS"],
+    imageUrl: TrustyCo2,
+    url: "https://www.trustyco.au/",
+  },
+  {
     title: "OM Farm Portal and Microservices",
     description:
       "I built the OM Farm Portal with TypeScript, featuring CQRS-designed article and agreement microservices. I also integrated Google services for a complete full-stack experience.",
     tags: ["React", "Next.js", "PostgreSQL", "GraphQL", "GCP"],
     imageUrl: OM_Farm,
     url: "https://www.om.farm/",
-  },
-  {
-    title: "BountyEX",
-    description:
-      "I developed the BountyEX frontend, a decentralized Ethereum bounty platform with smart contract integration.",
-    tags: ["React", "TypeScript", "NestJS", "ShadCN/UI", "Blockchain"],
-    imageUrl: BountyEx2,
-    url: "https://www.bountyex.org/change",
   },
   {
     title: "Reply Intelligence",
@@ -103,6 +103,7 @@ export const projectsData = [
 export const skillsData = [
   "TypeScript",
   "JavaScript",
+  "Angular",
   "React",
   "Next.js",
   "Node.js",
@@ -114,10 +115,7 @@ export const skillsData = [
   "Git",
   "Tailwind",
   "MongoDB",
-  "Firebase",
   "Material UI",
-  "GraphQL",
-  "Express",
   "PostgreSQL",
   "Python",
   "Framer Motion",
