@@ -19,30 +19,23 @@ export default function AboutMe() {
     >
       <SectionHeading>About Me</SectionHeading>
       <p className="mb-3">
-        I&apos;m a freshly double-degreed (
-        <span className="font-medium">CSE & Design!</span>) developer, and
-        I&apos;m itching to build some awesome stuff for the web! My adventure
-        has been a wild ride – I&apos;ve gone from VR touch-typing labs to
-        designing websites, and even survived (and thrived!) in a tiny startup.
-        I <span className="italic">love</span> blending tech and design to bring
-        cool ideas to life. My core stack? I&apos;m all about{" "}
+        I studied computer science and design in South Korea, and I&apos;ve been
+        building for the web ever since. I&apos;ve worked on everything from VR
+        touch-typing research to website design to scrappy startup life, and all
+        of it taught me that I&apos;m happiest when I&apos;m somewhere between
+        code and craft. I work mostly with{" "}
         <span className="font-medium">
-          TypeScript, React, Next.js, Node.js, and GCP
+          TypeScript, React, Angular, Next.js, and Node.js
         </span>
-        . Plus, I dabble in PostgreSQL, GraphQL, and MongoDB. I&apos;m always up
-        for learning new tricks! I&apos;m looking for a{" "}
-        <span className="font-medium">full-time position</span> where I can keep
-        growing and creating.
+        , with more tools mixed in depending on the project. I like picking up
+        new ones as I go.
       </p>
 
       <p>
-        <span className="italic">When I&apos;m not coding</span>, you&apos;ll
-        find me hanging with my dogs (Marla&apos;s my fave!), snapping film
-        photos, exploring new places, or strumming my ukulele (badly, but
-        enthusiastically!). I also enjoy{" "}
-        <span className="font-medium">learning new things</span>. Recently,
-        I&apos;ve started picking up on playing the ukulele, and exploring{" "}
-        <span className="font-medium">new travel destinations</span>.
+        <span className="italic">Outside of work</span>, I take film photos,
+        travel when I can, and I&apos;m currently trying to learn ukulele. I
+        also have dogs. Marla&apos;s the favorite, but don&apos;t tell the
+        others.
       </p>
     </motion.section>
   );
