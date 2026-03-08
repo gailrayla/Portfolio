@@ -34,8 +34,7 @@ export default function AboutMe() {
       <p>
         <span className="italic">Outside of work</span>, I take film photos,
         travel when I can, and I&apos;m currently trying to learn ukulele. I
-        also have dogs. Marla&apos;s the favorite, but don&apos;t tell the
-        others.
+        also have dogs (Marla&apos;s my favorite) and a cat. 
       </p>
     </motion.section>
   );
