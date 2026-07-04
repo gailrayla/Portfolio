@@ -61,7 +61,7 @@ export default function Intro() {
           <span className="font-bold">Hello, I&apos;m Gail!</span>
           <br />
           I&apos;m a{" "}
-          <span className="font-bold">frontend developer</span> with a{" "}
+          <span className="font-bold">frontend engineer</span> with a{" "}
           <span className="font-bold">double degree</span> in{" "}
           <span className="font-bold">CSE</span> and{" "}
           <span className="font-bold">Design</span>. <br /> I{" "}
