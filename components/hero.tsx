@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import Asterisk from "@/components/asterisk";
 import NameCanvas from "@/components/name-canvas";
 
 gsap.registerPlugin(useGSAP);
@@ -155,9 +156,7 @@ export default function Hero() {
 
       {/* Color block under the name — the "floor" the wordmark sits on. */}
       <div className="flex h-[28vh] items-center justify-center bg-card-yellow sm:h-[34vh]">
-        <span aria-hidden="true" className="spin-slow font-display text-5xl text-accent sm:text-7xl">
-          ✳
-        </span>
+        <Asterisk className="spin-slow h-12 w-12 text-accent sm:h-16 sm:w-16" />
       </div>
     </section>
   );

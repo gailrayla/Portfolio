@@ -85,14 +85,22 @@ export default function NameCanvas({ text, start, scatter }: NameCanvasProps) {
         return;
       }
 
+      // On phones the wordmark stacks into one word per line, each row much
+      // larger than the single-line version would allow.
+      const lines = window.innerWidth < 640 ? text.split(" ") : [text];
       let fontPx = 100;
       octx.font = `700 ${fontPx}px ${fontFamily}`;
-      fontPx = (fontPx * width * 0.99) / octx.measureText(text).width;
+      const longest = Math.max(...lines.map((line) => octx.measureText(line).width));
+      fontPx = (fontPx * width * 0.98) / longest;
       octx.font = `700 ${fontPx}px ${fontFamily}`;
-      const metrics = octx.measureText(text);
-      const baseline =
-        (height + metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) / 2;
-      octx.fillText(text, (width - metrics.width) / 2, baseline);
+      const rowHeight = height / lines.length;
+      lines.forEach((line, row) => {
+        const metrics = octx.measureText(line);
+        const baseline =
+          rowHeight * row +
+          (rowHeight + metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) / 2;
+        octx.fillText(line, 0, baseline);
+      });
 
       const step = Math.max(2, Math.round(3 * dpr));
       dot = step;
@@ -187,9 +195,18 @@ export default function NameCanvas({ text, start, scatter }: NameCanvasProps) {
       <span
         ref={sizerRef}
         aria-hidden="true"
-        className="block whitespace-nowrap text-center font-display text-[12.5vw] font-bold leading-[1.08] tracking-tight"
+        className="block text-left font-display font-bold tracking-tight"
       >
-        {text}
+        <span className="block text-[26vw] leading-[1] sm:hidden">
+          {text.split(" ").map((line) => (
+            <span key={line} className="block">
+              {line}
+            </span>
+          ))}
+        </span>
+        <span className="hidden whitespace-nowrap text-[12.5vw] leading-[1.08] sm:block">
+          {text}
+        </span>
       </span>
       <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 h-full w-full opacity-0" />
     </div>

@@ -39,7 +39,7 @@ export default function Footer() {
           <LocalTime timeZone="Asia/Manila" />
         </div>
 
-        <div className="relative z-10 flex min-h-[60vh] flex-col items-center pt-16 text-center sm:min-h-[70vh] sm:pt-20">
+        <div className="relative z-10 flex min-h-[26rem] flex-col items-center pt-10 text-center sm:min-h-[70vh] sm:pt-20">
           <h2 className="font-display text-[clamp(2.5rem,7vw,6.5rem)] font-semibold leading-none tracking-tight">
             Let&rsquo;s work together!
           </h2>

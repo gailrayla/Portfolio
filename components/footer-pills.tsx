@@ -4,6 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import Asterisk from "@/components/asterisk";
 
 gsap.registerPlugin(useGSAP);
 
@@ -77,7 +78,7 @@ export default function FooterPills() {
         open to work
       </span>
       <span className={`${circleBase} bottom-[12%] left-[11%] rotate-[12deg] bg-accent text-white`}>
-        ✳
+        <Asterisk className="h-[42%] w-[42%]" />
       </span>
       <span className={`${circleBase} bottom-[34%] right-[10%] rotate-[-10deg] bg-card-pink text-card-berry`}>
         @
