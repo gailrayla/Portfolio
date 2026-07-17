@@ -1,51 +1,70 @@
 import type { Metadata } from "next";
+import { Bricolage_Grotesque, Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import { Inter } from "next/font/google";
 import Header from "@/components/header";
-import ActiveSectionContextProvider from "@/context/active-section-context";
-import { Toaster } from "react-hot-toast";
 import Footer from "@/components/footer";
-import { ThemeProvider } from "@/components/theme-provider";
-import { ModeToggle } from "@/components/theme-switch-2";
+import SmoothScroll from "@/components/smooth-scroll";
+import { siteUrl } from "@/lib/content";
 
-const inter = Inter({
+const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
+  variable: "--font-bricolage",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Gail Parayno | Full-Stack Developer Portfolio",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Gail Parayno · Software Engineer, Frontend Focused",
+    template: "%s · Gail Parayno",
+  },
   description:
-    "Gail Parayno is a software engineer specializing in frontend and full-stack development. Explore projects, skills, and experience in web development.",
+    "Software engineer, frontend focused, with a formal design education: dual bachelor's in Computer Science Engineering and Design (UNIST, cum laude). Ships production interfaces end to end across TypeScript, Angular, React, Next.js, and Ruby on Rails.",
   keywords: [
     "Gail Parayno",
-    "Software Engineer Portfolio",
-    "Frontend Developer",
-    "Backend Developer",
-    "Full-Stack Developer",
-    "Web Development",
+    "frontend engineer",
+    "design engineer",
+    "UI engineer",
+    "full-stack developer",
+    "Angular",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Ruby on Rails",
+    "web developer Philippines",
   ],
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
-    title: "Gail Parayno | Software Engineer Portfolio",
+    title: "Gail Parayno · Software Engineer, Frontend Focused",
     description:
-      "Gail Parayno is a software engineer specializing in frontend and full-stack development.",
-    url: "https://www.gailparayno.com/",
-    siteName: "Gail Parayno Portfolio",
+      "Software engineer, frontend focused, with a formal design education. Ships production interfaces end to end.",
+    url: siteUrl,
+    siteName: "Gail Parayno",
     images: [
       {
-        url: "public/website-image.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Gail Parayno Portfolio",
+        alt: "Gail Parayno · portfolio",
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gail Parayno | Software Engineer Portfolio",
+    title: "Gail Parayno · Software Engineer, Frontend Focused",
     description:
-      "Gail Parayno is a software engineer specializing in frontend and full-stack development.",
-    images: ["public/website-image.png"],
+      "Software engineer, frontend focused, with a formal design education. Ships production interfaces end to end.",
+    images: ["/og-image.png"],
   },
 };
 
@@ -55,11 +74,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="!scroll-smooth">
+    <html
+      lang="en"
+      className={`${bricolage.variable} ${spaceGrotesk.variable}`}
+      suppressHydrationWarning
+    >
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-
+        {/* Adds .js before first paint so the hero load sequence can hide
+            its copy without a flash; no-JS visitors get the settled hero. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -68,7 +95,7 @@ export default function RootLayout({
               "@type": "Person",
               name: "Gail Parayno",
               jobTitle: "Software Engineer",
-              url: "https://www.gailparayno.com/",
+              url: siteUrl,
               sameAs: [
                 "https://www.linkedin.com/in/gail-parayno-280644247/",
                 "https://github.com/gailrayla",
@@ -77,27 +104,12 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body
-        className={`${inter.className} bg-gray-50 text-gray-950 relative pt-28 sm:pt-36 dark:bg-gray-900 dark:text-gray-50 dark:text-opacity-90`}
-      >
-        <div className="bg-[#fbe2e3] absolute top-[-6rem] -z-10 right-[11rem] h-[31.25rem] w-[31.25rem] rounded-full blur-[10rem] sm:w-[68.75rem] dark:bg-[#946263]"></div>
-        <div className="bg-[#dbd7fb] absolute top-[-1rem] -z-10 left-[-35rem] h-[31.25rem] w-[50rem] rounded-full blur-[10rem] sm:w-[68.75rem] md:left-[-33rem] lg:left-[-28rem] xl:left-[-15rem] 2xl:left-[-5rem] dark:bg-[#676394]"></div>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <ActiveSectionContextProvider>
-            <Header />
-            {children}
-            <Footer />
-            <div className="fixed bottom-5 right-5">
-              <ModeToggle />
-            </div>
-            <Toaster position="top-right" />
-          </ActiveSectionContextProvider>
-        </ThemeProvider>
+      <body className="bg-paper text-ink antialiased">
+        <SmoothScroll>
+          <Header />
+          {children}
+          <Footer />
+        </SmoothScroll>
       </body>
     </html>
   );

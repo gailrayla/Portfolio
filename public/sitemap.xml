@@ -2,8 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.gailparayno.com/</loc>
-    <lastmod>2024-03-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.gailparayno.com/about</loc>
+  </url>
+  <url>
+    <loc>https://www.gailparayno.com/work/trustyco</loc>
+  </url>
+  <url>
+    <loc>https://www.gailparayno.com/work/byrachel</loc>
+  </url>
+  <url>
+    <loc>https://www.gailparayno.com/work/burt</loc>
   </url>
 </urlset>

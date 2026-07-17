@@ -1,133 +1,176 @@
 @import "tailwindcss";
 
-@plugin "tailwindcss-animate";
+/*
+ * Token system.
+ * Palette is Gail's pink + yellow identity (sampled from her jazzicreates
+ * reference): hot pink accent, pale yellow and pale pink surfaces, deep
+ * berry for the dark card — on warm paper with plum-black ink.
+ * Everything downstream references these tokens only.
+ */
+@theme {
+  --color-paper: #f7f5f2;
+  --color-ink: #26131e;
+  --color-ink-muted: #6b5260;
+  --color-line: #e8dfdc;
+  --color-line-faint: #f0eae6;
+  --color-accent: #e0447f;
 
-@custom-variant dark (&:is(.dark *));
+  --color-card-yellow: #f4f0a3;
+  --color-card-pink: #f3cfdd;
+  --color-card-berry: #7e2138;
+
+  /* Two voices: display = design, label = structure and annotation. */
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-label: var(--font-space), ui-sans-serif, system-ui, sans-serif;
+
+  --text-display-xl: clamp(2.75rem, 8vw, 5.5rem);
+  --text-display-lg: clamp(2rem, 5vw, 3.25rem);
+  --text-display-md: clamp(1.5rem, 3vw, 2rem);
+}
 
 html {
-  --line-color: #e5e7eb;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-display);
 }
 
-html.dark {
-  --line-color: rgba(255, 255, 255, 0.2);
+::selection {
+  background-color: var(--color-accent);
+  color: #ffffff;
 }
 
-.borderBlack {
-  @apply border border-black/10;
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 1px;
 }
 
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+/*
+ * Construction-drawing annotations are decoration: hidden unless the load
+ * sequence runs. GSAP flips them on, draws them, retracts them.
+ */
+.anno {
+  opacity: 0;
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+/*
+ * Pre-hydration guard for the load sequence: the inline script in layout.tsx
+ * adds .js before first paint, so hero copy stays hidden until GSAP takes
+ * over. Without JS the class never lands and the hero renders fully styled.
+ */
+html.js .hero-copy {
+  visibility: hidden;
 }
 
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
+@media (prefers-reduced-motion: reduce) {
+  html.js .hero-copy {
+    visibility: visible;
   }
-  body {
-    @apply bg-background text-foreground;
+}
+
+/*
+ * The preloader only exists for JS + motion-allowed visitors: without JS the
+ * class never lands and the page renders settled; reduced-motion skips it.
+ */
+.preloader {
+  display: none;
+}
+
+html.js .preloader {
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .preloader {
+    display: none;
+  }
+}
+
+/* Small structural text — labels, annotations, captions, metadata.
+   Lives in the components layer so color utilities can override it. */
+@layer components {
+  .label {
+    font-family: var(--font-label);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+}
+
+/* Stack-chip pills on the work cards jump when hovered. */
+@keyframes pill-jump {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  35% {
+    transform: translateY(-8px) rotate(-2deg);
+  }
+  70% {
+    transform: translateY(1px) rotate(1.5deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.stack-pill:hover {
+  animation: pill-jump 0.5s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stack-pill:hover {
+    animation: none;
+  }
+}
+
+/* Slow spinning accent mark (hero color block). */
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-slow {
+  animation: spin-slow 24s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin-slow {
+    animation: none;
+  }
+}
+
+/* Letter-roll hover for footer links: the text slides up, its twin follows. */
+.roll-link {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  height: 1.4em;
+  height: 1lh;
+}
+
+.roll-link-inner {
+  display: block;
+  transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.roll-link-inner > span {
+  display: block;
+}
+
+.roll-link:hover .roll-link-inner,
+.roll-link:focus-visible .roll-link-inner {
+  transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .roll-link-inner {
+    transition: none;
+  }
+
+  .roll-link:hover .roll-link-inner,
+  .roll-link:focus-visible .roll-link-inner {
+    transform: none;
   }
 }
