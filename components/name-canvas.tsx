@@ -91,9 +91,10 @@ export default function NameCanvas({ text, start, scatter }: NameCanvasProps) {
       let fontPx = 100;
       octx.font = `700 ${fontPx}px ${fontFamily}`;
       const longest = Math.max(...lines.map((line) => octx.measureText(line).width));
-      fontPx = (fontPx * width * 0.98) / longest;
-      octx.font = `700 ${fontPx}px ${fontFamily}`;
       const rowHeight = height / lines.length;
+      // Fit to width, but never taller than a row — glyphs must not clip.
+      fontPx = Math.min((fontPx * width * 0.98) / longest, rowHeight * 0.95);
+      octx.font = `700 ${fontPx}px ${fontFamily}`;
       lines.forEach((line, row) => {
         const metrics = octx.measureText(line);
         const baseline =
@@ -191,13 +192,18 @@ export default function NameCanvas({ text, start, scatter }: NameCanvasProps) {
   }, [start, scatter, text]);
 
   return (
-    <div ref={wrapRef} role="img" aria-label={text} className="relative w-full select-none">
+    <div
+      ref={wrapRef}
+      role="img"
+      aria-label={text}
+      className="relative w-full max-w-full select-none overflow-hidden"
+    >
       <span
         ref={sizerRef}
         aria-hidden="true"
         className="block text-left font-display font-bold tracking-tight"
       >
-        <span className="block text-[26vw] leading-[1] sm:hidden">
+        <span className="block text-[22vw] leading-[1] sm:hidden">
           {text.split(" ").map((line) => (
             <span key={line} className="block">
               {line}
