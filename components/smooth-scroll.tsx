@@ -7,6 +7,11 @@ import Lenis from "lenis";
 
 export default function SmoothScroll({ children }: { children: ReactNode }) {
   useEffect(() => {
+    window.history.scrollRestoration = "manual";
+    if (!window.location.hash) {
+      window.scrollTo(0, 0);
+    }
+
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (prefersReduced.matches) {
       return;

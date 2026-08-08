@@ -62,7 +62,7 @@ export default function FooterPills() {
     <div
       ref={container}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 bottom-32 top-0 select-none sm:bottom-20"
+      className="pointer-events-none absolute inset-x-0 bottom-20 top-0 hidden select-none sm:block"
     >
       {/* Piled on the floor, overlapping — nothing floats. */}
       <span className={`${pillBase} bottom-[24%] left-[-4%] rotate-[-32deg] bg-card-yellow text-ink sm:left-[-2%]`}>
@@ -80,9 +80,11 @@ export default function FooterPills() {
       <span className={`${circleBase} bottom-[12%] left-[11%] rotate-[12deg] bg-accent text-white`}>
         <Asterisk className="h-[42%] w-[42%]" />
       </span>
-      <span className={`${circleBase} bottom-[34%] right-[10%] rotate-[-10deg] bg-card-pink text-card-berry`}>
-        @
-      </span>
+<span
+  className={`${circleBase} bottom-[12%] right-[5%] rotate-[-10deg] bg-card-pink text-card-berry sm:bottom-[3%] sm:right-[23%]`}
+>
+  @
+</span>
     </div>
   );
 }

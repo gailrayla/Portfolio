@@ -85,15 +85,12 @@ export default function NameCanvas({ text, start, scatter }: NameCanvasProps) {
         return;
       }
 
-      // On phones the wordmark stacks into one word per line, each row much
-      // larger than the single-line version would allow.
       const lines = window.innerWidth < 640 ? text.split(" ") : [text];
       let fontPx = 100;
       octx.font = `700 ${fontPx}px ${fontFamily}`;
       const longest = Math.max(...lines.map((line) => octx.measureText(line).width));
       const rowHeight = height / lines.length;
-      // Fit to width, but never taller than a row — glyphs must not clip.
-      fontPx = Math.min((fontPx * width * 0.98) / longest, rowHeight * 0.95);
+      fontPx = Math.min((fontPx * width * 0.98) / longest, rowHeight * 0.98);
       octx.font = `700 ${fontPx}px ${fontFamily}`;
       lines.forEach((line, row) => {
         const metrics = octx.measureText(line);
@@ -210,7 +207,7 @@ export default function NameCanvas({ text, start, scatter }: NameCanvasProps) {
             </span>
           ))}
         </span>
-        <span className="hidden whitespace-nowrap text-[12.5vw] leading-[1.08] sm:block">
+        <span className="hidden whitespace-nowrap text-[16vw] leading-none sm:block">
           {text}
         </span>
       </span>

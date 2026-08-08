@@ -38,7 +38,7 @@ export const phoneDisplay = "+63 956 771 3741";
 export const phoneHref = "tel:+639567713741";
 export const githubUrl = "https://github.com/gailrayla";
 export const linkedinUrl = "https://www.linkedin.com/in/gail-parayno-280644247/";
-export const cvPath = "/Gail_Rayla_Emanuelle_Parayno_Full_Stack_Engineer_Resume.pdf";
+export const cvPath = "/Gail_Parayno_Software_Engineer_Resume.pdf";
 
 export const caseStudies: CaseStudy[] = [
   {

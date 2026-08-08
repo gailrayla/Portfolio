@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { email } from "@/lib/content";
 
 export default function Header() {
   return (
@@ -21,9 +20,9 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <a href={`mailto:${email}`} className="transition-colors hover:text-ink">
+              <Link href="#contact" className="transition-colors hover:text-ink">
                 Contact
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
