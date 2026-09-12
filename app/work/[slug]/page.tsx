@@ -1,8 +1,10 @@
 import { Fragment } from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { caseStudies, getCaseStudy } from "@/lib/content";
+import WorkDiagram from "@/components/work-diagrams";
+import { getWork, work } from "@/lib/content";
 
 /** Renders `**bold**` spans in content paragraphs as emphasized text. */
 function RichText({ text }: { text: string }) {
@@ -11,7 +13,7 @@ function RichText({ text }: { text: string }) {
     <>
       {parts.map((part, index) =>
         index % 2 === 1 ? (
-          <strong key={index} className="font-semibold text-ink">
+          <strong key={index} className="font-medium text-ink">
             {part}
           </strong>
         ) : (
@@ -22,107 +24,92 @@ function RichText({ text }: { text: string }) {
   );
 }
 
-type CaseStudyPageProps = {
+type WorkPageProps = {
   params: Promise<{ slug: string }>;
 };
 
 export function generateStaticParams(): { slug: string }[] {
-  return caseStudies.map((study) => ({ slug: study.slug }));
+  return work.map((item) => ({ slug: item.slug }));
 }
 
-export async function generateMetadata({ params }: CaseStudyPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: WorkPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const study = getCaseStudy(slug);
+  const item = getWork(slug);
 
-  if (!study) {
+  if (!item) {
     return {};
   }
 
   return {
-    title: study.title,
-    description: study.summary,
+    title: item.title,
+    description: item.summary,
   };
 }
 
-export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
+export default async function WorkPage({ params }: WorkPageProps) {
   const { slug } = await params;
-  const study = getCaseStudy(slug);
+  const item = getWork(slug);
 
-  if (!study) {
+  if (!item) {
     notFound();
   }
 
-  const studyIndex = caseStudies.findIndex((entry) => entry.slug === study.slug);
-  const nextStudy = caseStudies[(studyIndex + 1) % caseStudies.length];
+  const index = work.findIndex((entry) => entry.slug === item.slug);
+  const next = work[(index + 1) % work.length];
 
   return (
-    <main>
-      <article className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-        <Link
-          href="/#work"
-          className="label transition-colors hover:text-ink"
+    <main id="main">
+      <article className="shell py-10 sm:py-14">
+        {/* Cover: the imagery first, the way the card promised it. */}
+        <div
+          className={`relative w-full overflow-hidden rounded-2xl bg-surface ${
+            item.thumb ? "aspect-[16/9]" : "aspect-[16/10]"
+          }`}
         >
-          ← Selected work
-        </Link>
+          {item.thumb ? (
+            <Image
+              src={item.thumb.src}
+              alt={item.thumb.alt}
+              fill
+              priority
+              sizes="(min-width: 1088px) 68rem, 100vw"
+              className="object-cover object-top"
+            />
+          ) : item.diagram ? (
+            <WorkDiagram variant={item.diagram} />
+          ) : null}
+        </div>
+        {/* The note explains the absence of screenshots; it belongs under the
+            drawing, not inside the frame where it reads as a caption. */}
+        {item.note ? <p className="label mt-3 text-center">{item.note}</p> : null}
 
-        <header className="mt-12 border-b border-line pb-12">
-          <p className="label">
-            fig. {String(studyIndex + 1).padStart(2, "0")} / {study.kind.toLowerCase()}
-          </p>
-          <h1 className="mt-4 font-display text-display-lg font-semibold tracking-tight">
-            {study.title}
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted">{study.summary}</p>
-
-          <dl className="mt-10 grid gap-6 sm:grid-cols-3">
-            <div>
-              <dt className="label">Client</dt>
-              <dd className="mt-1">{study.client}</dd>
-            </div>
-            <div>
-              <dt className="label">Role</dt>
-              <dd className="mt-1">{study.role}</dd>
-            </div>
-            {study.stack ? (
-              <div>
-                <dt className="label">Stack</dt>
-                <dd className="mt-1">{study.stack.join(" · ")}</dd>
-              </div>
-            ) : null}
-          </dl>
-
-          {study.liveUrl ? (
+        <header className="mx-auto mt-12 max-w-[62ch] text-center">
+          <h1 className="font-sans text-display font-medium tracking-tight">{item.title}</h1>
+          <p className="mt-4 text-lg leading-relaxed text-ink-muted">{item.summary}</p>
+          {item.liveUrl ? (
             <a
-              href={study.liveUrl}
+              href={item.liveUrl}
               target="_blank"
               rel="noreferrer"
-              className="mt-8 inline-block font-display font-medium underline decoration-ink/30 underline-offset-4 transition-colors hover:decoration-ink"
+              className="mt-6 inline-block font-mono text-xs text-ink-muted underline decoration-line underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
             >
-              Visit the live site
+              visit the live site &rarr;
             </a>
           ) : null}
-
-          {study.note ? <p className="label mt-8">{study.note}</p> : null}
         </header>
 
-        {study.metrics ? (
-          <section aria-label="Outcomes" className="border-b border-line py-12">
-            <dl className="grid gap-8 sm:grid-cols-3">
-              {study.metrics.map((metric) => (
-                <div key={metric.label}>
-                  <dd className="font-display text-display-md font-semibold tracking-tight">
-                    {metric.value}
-                  </dd>
-                  <dt className="label mt-2">{metric.label}</dt>
-                </div>
-              ))}
-            </dl>
-          </section>
-        ) : null}
+        <dl className="mt-14 grid gap-8 border-y border-line-faint py-8 sm:grid-cols-2 lg:grid-cols-4">
+          {item.meta.map((entry) => (
+            <div key={entry.label}>
+              <dt className="label">{entry.label}</dt>
+              <dd className="mt-1.5 text-sm leading-relaxed">{entry.value}</dd>
+            </div>
+          ))}
+        </dl>
 
-        <div className="mt-4 max-w-2xl">
-          {study.sections.map((section) => (
-            <section key={section.heading} className="py-8">
+        <div className="mx-auto mt-14 max-w-[62ch]">
+          {item.sections.map((section) => (
+            <section key={section.heading} className="mb-12">
               <h2 className="label">{section.heading}</h2>
               {section.paragraphs.map((paragraph) => (
                 <p key={paragraph} className="mt-4 leading-relaxed text-ink-muted">
@@ -133,13 +120,15 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
           ))}
         </div>
 
-        <footer className="mt-12 border-t border-line pt-10">
-          <p className="label">Next</p>
-          <Link
-            href={`/work/${nextStudy.slug}`}
-            className="mt-2 inline-block font-display text-display-md font-semibold tracking-tight underline decoration-ink/30 underline-offset-4 transition-colors hover:decoration-ink"
-          >
-            {nextStudy.title}
+        <footer className="mt-6 flex items-baseline justify-between gap-6 border-t border-line-faint pt-8">
+          <Link href="/#work" className="label transition-colors hover:text-accent">
+            &larr; all work
+          </Link>
+          <Link href={`/work/${next.slug}`} className="group text-right">
+            <span className="label">next</span>
+            <span className="mt-1 block font-sans text-title font-medium tracking-tight transition-colors group-hover:text-accent">
+              {next.title}
+            </span>
           </Link>
         </footer>
       </article>

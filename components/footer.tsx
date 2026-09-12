@@ -1,6 +1,7 @@
-import FooterPills from "@/components/footer-pills";
+import Link from "next/link";
+import CopyEmail from "@/components/copy-email";
 import LocalTime from "@/components/local-time";
-import { cvPath, email, githubUrl, linkedinUrl, phoneDisplay, phoneHref } from "@/lib/content";
+import { cvPath, email, githubUrl, linkedinUrl, profile } from "@/lib/content";
 
 function RollLink({
   href,
@@ -28,49 +29,66 @@ function RollLink({
   );
 }
 
+const footerNav = [
+  { href: "/", label: "work" },
+  { href: "/about", label: "about" },
+];
+
 export default function Footer() {
   return (
-    <footer id="contact" className="scroll-mt-6 px-4 pb-4 sm:px-6 sm:pb-6">
-      <div className="relative overflow-hidden rounded-3xl border border-line bg-white px-6 py-8 sm:px-10 sm:py-10">
-        <FooterPills />
+    <footer id="contact" className="border-t border-line-faint">
+      <div className="shell py-16 sm:py-20">
+        <div className="flex flex-col gap-10 sm:flex-row sm:justify-between">
+          <div>
+            <h2 className="font-sans text-display font-medium tracking-tight">say hello.</h2>
+            <p className="mt-4 max-w-md leading-relaxed text-ink-muted">
+              Open to software engineering roles, full-stack and product work, and freelance
+              builds. Always happy to talk about shipping the whole thing rather than a slice of
+              it, and I will never turn down a coffee chat.
+            </p>
+            <div className="mt-7">
+              <CopyEmail address={email} />
+            </div>
+          </div>
 
-        <div className="label relative z-10 flex items-baseline justify-between">
-          <span>Philippines · GMT+8</span>
-          <LocalTime timeZone="Asia/Manila" />
+          <nav aria-label="Footer" className="sm:text-right">
+            <ul className="flex gap-6 font-mono text-xs text-ink-muted sm:flex-col sm:gap-2.5">
+              {footerNav.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="transition-colors hover:text-accent">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <a href={cvPath} download className="transition-colors hover:text-accent">
+                  cv
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
 
-        <div className="relative z-10 flex flex-col items-center py-12 text-center sm:min-h-[70vh] sm:py-0 sm:pt-20">
-          <h2 className="font-display text-[clamp(2.5rem,7vw,6.5rem)] font-semibold leading-none tracking-tight">
-            Let&rsquo;s work together!
-          </h2>
-          <a
-            href={`mailto:${email}`}
-            className="mt-10 inline-block max-w-full rounded-full bg-accent px-6 py-4 font-display text-[clamp(1rem,2.5vw,2.5rem)] font-semibold text-white transition-transform duration-200 hover:-rotate-2 hover:scale-105 sm:px-16 sm:py-8"
-          >
-            {email}
-          </a>
-        </div>
-
-        <div className="relative z-10 flex flex-col gap-3 border-t border-line pt-6 sm:flex-row sm:items-baseline sm:justify-between">
-          <p className="label">© {new Date().getFullYear()} Gail Parayno</p>
-          <ul className="flex flex-wrap items-baseline gap-x-6 gap-y-2 font-display text-base">
+        <div className="mt-14 flex flex-col gap-4 border-t border-line-faint pt-6 sm:flex-row sm:items-baseline sm:justify-between">
+          <p className="label">
+            &copy; {new Date().getFullYear()} {profile.name} &middot; {profile.location},{" "}
+            {profile.timeZoneLabel} &middot; <LocalTime timeZone={profile.timeZone} />
+          </p>
+          <ul className="flex flex-wrap items-baseline gap-x-6 gap-y-2 font-mono text-xs">
             <li>
               <RollLink href={linkedinUrl} external>
-                LinkedIn
+                linkedin
               </RollLink>
             </li>
             <li>
               <RollLink href={githubUrl} external>
-                GitHub
+                github
               </RollLink>
             </li>
             <li>
               <RollLink href={cvPath} download>
-                Download CV
+                download cv
               </RollLink>
-            </li>
-            <li>
-              <RollLink href={phoneHref}>{phoneDisplay}</RollLink>
             </li>
           </ul>
         </div>
