@@ -2,36 +2,52 @@
 
 /*
  * Token system.
- * Palette is Gail's pink + yellow identity (sampled from her jazzicreates
- * reference): hot pink accent, pale yellow and pale pink surfaces, deep
- * berry for the dark card — on warm paper with plum-black ink.
+ *
+ * The look is light and airy on warm near-white paper: a lot of quiet, a
+ * little pink. Gail's pink stays the identity, but it now appears as an
+ * accent on paper rather than as full-bleed colour blocks, so the work
+ * imagery is the loudest thing on the page.
+ *
  * Everything downstream references these tokens only.
  */
 @theme {
-  --color-paper: #f7f5f2;
-  --color-ink: #26131e;
-  --color-ink-muted: #6b5260;
-  --color-line: #e8dfdc;
-  --color-line-faint: #f0eae6;
-  --color-accent: #e0447f;
+  --color-paper: #faf8f7;
+  --color-surface: #f2eeec;
+  --color-ink: #221c20;
+  --color-ink-muted: #6f6169;
+  --color-ink-faint: #9a8c93;
+  --color-line: #e7dfdc;
+  --color-line-faint: #f0eae7;
+  --color-accent: #d63a72;
+  --color-accent-deep: #b82e60;
+  --color-accent-soft: #fbeaf1;
 
-  --color-card-yellow: #f4f0a3;
-  --color-card-pink: #f3cfdd;
-  --color-card-berry: #7e2138;
+  /*
+   * Three voices, three jobs.
+   * sans: everything you read as prose or heading.
+   * mono: structure, so labels, metadata, tags, status.
+   * hand: annotation, the wordmark and the margin notes.
+   */
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-source-code), ui-monospace, "SF Mono", monospace;
+  --font-hand: var(--font-caveat), "Segoe Print", cursive;
 
-  /* Two voices: display = design, label = structure and annotation. */
-  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
-  --font-label: var(--font-space), ui-sans-serif, system-ui, sans-serif;
-
-  --text-display-xl: clamp(2.75rem, 8vw, 5.5rem);
-  --text-display-lg: clamp(2rem, 5vw, 3.25rem);
-  --text-display-md: clamp(1.5rem, 3vw, 2rem);
+  --text-hero: clamp(2.75rem, 7.5vw, 4.75rem);
+  --text-display: clamp(2rem, 4.5vw, 3rem);
+  --text-title: clamp(1.375rem, 2.5vw, 1.75rem);
 }
 
 html {
   background-color: var(--color-paper);
   color: var(--color-ink);
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
+  /* Anchors clear the sticky header. */
+  scroll-padding-top: 6rem;
+}
+
+body {
+  /* Nothing on this site is wide enough to warrant a sideways scrollbar. */
+  overflow-x: hidden;
 }
 
 ::selection {
@@ -42,111 +58,108 @@ html {
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
-  border-radius: 1px;
+  border-radius: 2px;
 }
 
-/*
- * Construction-drawing annotations are decoration: hidden unless the load
- * sequence runs. GSAP flips them on, draws them, retracts them.
- */
-.anno {
-  opacity: 0;
-}
-
-/*
- * Pre-hydration guard for the load sequence: the inline script in layout.tsx
- * adds .js before first paint, so hero copy stays hidden until GSAP takes
- * over. Without JS the class never lands and the hero renders fully styled.
- */
-html.js .hero-copy {
-  visibility: hidden;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html.js .hero-copy {
-    visibility: visible;
-  }
-}
-
-/*
- * The preloader only exists for JS + motion-allowed visitors: without JS the
- * class never lands and the page renders settled; reduced-motion skips it.
- */
-.preloader {
-  display: none;
-}
-
-html.js .preloader {
-  display: block;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html.js .preloader {
-    display: none;
-  }
-}
-
-/* Small structural text — labels, annotations, captions, metadata.
-   Lives in the components layer so color utilities can override it. */
 @layer components {
+  /*
+   * Small structural text: labels, metadata, captions, status lines.
+   * Lives in the components layer so utilities can override its colour.
+   */
   .label {
-    font-family: var(--font-label);
+    font-family: var(--font-mono);
     font-size: 0.6875rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-faint);
+  }
+
+  /* Discipline tags on work cards and the about page. */
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.02em;
+    color: var(--color-ink-muted);
+    border: 1px solid var(--color-line);
+    border-radius: 9999px;
+    padding: 0.25rem 0.625rem;
+    white-space: nowrap;
+  }
+
+  /* The page's one horizontal measure. Every section sits on it. */
+  .shell {
+    width: 100%;
+    max-width: 68rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .shell {
+      padding-inline: 2rem;
+    }
+  }
+
+  /* Margin notes in the hand voice, the arrow's companion. */
+  .note {
+    font-family: var(--font-hand);
+    font-size: 1.25rem;
+    line-height: 1.35;
     color: var(--color-ink-muted);
   }
 }
 
-/* Stack-chip pills on the work cards jump when hovered. */
-@keyframes pill-jump {
-  0% {
-    transform: translateY(0) rotate(0deg);
-  }
-  35% {
-    transform: translateY(-8px) rotate(-2deg);
-  }
-  70% {
-    transform: translateY(1px) rotate(1.5deg);
-  }
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
+/*
+ * Underline that grows from the left on hover, and sits fully drawn on the
+ * current page. Used by the header nav.
+ */
+.nav-link {
+  position: relative;
 }
 
-.stack-pill:hover {
-  animation: pill-jump 0.5s ease;
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.35rem;
+  height: 1px;
+  width: 100%;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.28s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.nav-link:hover::after,
+.nav-link:focus-visible::after,
+.nav-link[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+/* Work-card thumbnail lifts a touch on hover; the image itself eases in. */
+.work-card-thumb img {
+  transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.work-card:hover .work-card-thumb img {
+  transform: scale(1.03);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stack-pill:hover {
-    animation: none;
+  .nav-link::after,
+  .work-card-thumb img {
+    transition: none;
+  }
+
+  .work-card:hover .work-card-thumb img {
+    transform: none;
   }
 }
 
-/* Slow spinning accent mark (hero color block). */
-@keyframes spin-slow {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.spin-slow {
-  animation: spin-slow 24s linear infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .spin-slow {
-    animation: none;
-  }
-}
-
-/* Letter-roll hover for footer links: the text slides up, its twin follows. */
+/* Letter-roll hover: the text slides up and its twin follows. */
 .roll-link {
   display: inline-block;
   overflow: hidden;
   vertical-align: bottom;
-  height: 1.4em;
   height: 1lh;
 }
 

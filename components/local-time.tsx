@@ -19,5 +19,5 @@ export default function LocalTime({ timeZone }: { timeZone: string }) {
     return () => window.clearInterval(id);
   }, [timeZone]);
 
-  return <span>{time || "—"}</span>;
+  return <span>{time || "··:··"}</span>;
 }

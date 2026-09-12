@@ -1,70 +1,71 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Space_Grotesk } from "next/font/google";
+import { Caveat, Outfit, Source_Code_Pro } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import SmoothScroll from "@/components/smooth-scroll";
-import { siteUrl } from "@/lib/content";
+import { githubUrl, linkedinUrl, profile, siteUrl } from "@/lib/content";
 
-const bricolage = Bricolage_Grotesque({
+const outfit = Outfit({
   subsets: ["latin"],
-  variable: "--font-bricolage",
+  variable: "--font-outfit",
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
+const sourceCodePro = Source_Code_Pro({
   subsets: ["latin"],
-  variable: "--font-space",
+  variable: "--font-source-code",
   display: "swap",
 });
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  variable: "--font-caveat",
+  display: "swap",
+});
+
+const title = `${profile.name} · Software Engineer`;
+const description =
+  "Software engineer who designs and ships features end to end, across Angular, React, Next.js, Ruby on Rails and NestJS. Dual bachelor's in Computer Science Engineering and Design (UNIST, cum laude).";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Gail Parayno · Software Engineer, Frontend Focused",
-    template: "%s · Gail Parayno",
+    default: title,
+    template: `%s · ${profile.name}`,
   },
-  description:
-    "Software engineer, frontend focused, with a formal design education: dual bachelor's in Computer Science Engineering and Design (UNIST, cum laude). Ships production interfaces end to end across TypeScript, Angular, React, Next.js, and Ruby on Rails.",
+  description,
   keywords: [
     "Gail Parayno",
-    "frontend engineer",
+    "software engineer",
+    "full-stack engineer",
+    "product engineer",
     "design engineer",
-    "UI engineer",
-    "full-stack developer",
     "Angular",
     "React",
     "Next.js",
     "TypeScript",
     "Ruby on Rails",
-    "web developer Philippines",
+    "NestJS",
+    "software engineer Philippines",
   ],
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
-    title: "Gail Parayno · Software Engineer, Frontend Focused",
-    description:
-      "Software engineer, frontend focused, with a formal design education. Ships production interfaces end to end.",
+    title,
+    description,
     url: siteUrl,
-    siteName: "Gail Parayno",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Gail Parayno · portfolio",
-      },
-    ],
+    siteName: profile.name,
+    /* The image comes from app/opengraph-image.tsx, which is generated from
+       the same profile data as the page, so it cannot go stale. */
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gail Parayno · Software Engineer, Frontend Focused",
-    description:
-      "Software engineer, frontend focused, with a formal design education. Ships production interfaces end to end.",
-    images: ["/og-image.png"],
+    title,
+    description,
   },
 };
 
@@ -76,35 +77,31 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bricolage.variable} ${spaceGrotesk.variable}`}
+      className={`${outfit.variable} ${sourceCodePro.variable} ${caveat.variable}`}
       suppressHydrationWarning
     >
       <head>
-        {/* Adds .js before first paint so the hero load sequence can hide
-            its copy without a flash; no-JS visitors get the settled hero. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: "document.documentElement.classList.add('js')",
-          }}
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Person",
-              name: "Gail Parayno",
+              name: profile.name,
               jobTitle: "Software Engineer",
               url: siteUrl,
-              sameAs: [
-                "https://www.linkedin.com/in/gail-parayno-280644247/",
-                "https://github.com/gailrayla",
-              ],
+              sameAs: [linkedinUrl, githubUrl],
             }),
           }}
         />
       </head>
       <body className="bg-paper text-ink antialiased">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-paper"
+        >
+          Skip to content
+        </a>
         <SmoothScroll>
           <Header />
           {children}
