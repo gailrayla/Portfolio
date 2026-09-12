@@ -128,9 +128,8 @@ export const work: Work[] = [
       {
         heading: "Agentic workflows",
         paragraphs: [
-          "I **help bring agentic AI into how the team ships**, inside the existing workflow rather than alongside it: same repo, same review, same release process.",
-          "The hard part was never getting a model to produce code. It is getting it to produce code **the way this team writes code**. A large Angular and Rails codebase carries years of accumulated convention, and a tool that ignores that generates work which passes tests and still fails review.",
-          "So most of the work is **encoding what we already know**: turning our conventions, patterns, and review standards into reusable skills and instructions an agent reads before it touches anything. **The standards stay ours.** The agent has to meet them, not redefine them.",
+          "I **work with agentic AI every day**, and I am deliberate about where it fits. It belongs inside the workflow a team already has rather than in a side channel, held to the same review and the same bar as anything else that ships.",
+          "The interesting problem was never getting a model to produce code. It is getting it to produce code that **fits an established codebase**, because a tool that ignores existing convention produces work which passes tests and still fails review. **Most of the value is in encoding what a team already knows** well enough that an agent can meet it, which is work I have built tooling for.",
         ],
       },
     ],
